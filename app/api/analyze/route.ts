@@ -1,12 +1,16 @@
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
 
-const client = new OpenAI({
-  apiKey: process.env.DEEPSEEK_API_KEY || "",
-  baseURL: process.env.DEEPSEEK_BASE_URL || "https://api.deepseek.com/v1",
-});
+function getClient() {
+  return new OpenAI({
+    apiKey: process.env.DEEPSEEK_API_KEY || "",
+    baseURL: process.env.DEEPSEEK_BASE_URL || "https://api.deepseek.com/v1",
+  });
+}
 
-const MODEL = process.env.DEEPSEEK_MODEL || "deepseek-chat";
+function getModel() {
+  return process.env.DEEPSEEK_MODEL || "deepseek-chat";
+}
 
 const SYSTEM_PROMPT = `你是一个资深的市场研究和消费者洞察分析专家。你的任务是根据用户提供的消费者反馈文本，进行深度分析并输出结构化的JSON结果。
 
@@ -80,8 +84,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "文本不能为空" }, { status: 400 });
     }
 
-    const response = await client.chat.completions.create({
-      model: MODEL,
+    const response = await getClient().chat.completions.create({
+      model: getModel(),
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
         { role: "user", content: `请分析以下消费者反馈文本：\n\n${text}` },
