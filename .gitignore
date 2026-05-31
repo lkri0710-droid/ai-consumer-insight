@@ -36,6 +36,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# cloudflare (保留，以备将来部署)
+.wrangler
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
